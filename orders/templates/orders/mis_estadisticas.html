@@ -1,0 +1,37 @@
+{% extends "panel/base_admin.html" %}
+
+{% block admin_content %}
+<h2 class="section-title mb-3">Mis estadísticas</h2>
+
+<p class="mb-2">
+    Órdenes completas (pagadas): <strong>{{ cantidad_ordenes }}</strong>
+</p>
+<p class="mb-4">
+    Total generado: <strong>${{ total_ganado }}</strong>
+</p>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th># Orden</th>
+            <th>Mesa</th>
+            <th>Fecha</th>
+            <th>Total</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for orden in ordenes %}
+        <tr>
+            <td>{{ orden.id }}</td>
+            <td>Mesa {{ orden.mesa.numero }}</td>
+            <td>{{ orden.fecha_creacion|date:"d/m/Y H:i" }}</td>
+            <td>${{ orden.total }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="4">Aún no tienes órdenes pagadas.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

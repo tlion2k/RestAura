@@ -1,0 +1,93 @@
+{% extends "panel/base_admin.html" %}
+
+{% block admin_content %}
+<h2 class="section-title mb-3">Orden - Mesa {{ mesa.numero }}</h2>
+
+<h5 class="mb-3">Mesero: {{ request.user.username }}</h5>
+<p class="mb-2">
+    Estado actual:
+    {% if orden.estado == "abierta" %}
+        <span class="badge bg-warning text-dark">Abierta</span>
+    {% elif orden.estado == "servida" %}
+        <span class="badge bg-info text-dark">Servida</span>
+    {% elif orden.estado == "pagada" %}
+        <span class="badge bg-success">Pagada</span>
+    {% elif orden.estado == "cancelada" %}
+        <span class="badge bg-danger">Cancelada</span>
+    {% endif %}
+</p>
+
+<div class="mb-4">
+    <h5>Agregar plato a la orden</h5>
+    <form method="post" class="row g-2">
+        {% csrf_token %}
+        <div class="col-md-6">
+            {{ form.plato.label_tag }}
+            {{ form.plato }}
+        </div>
+        <div class="col-md-3">
+            {{ form.cantidad.label_tag }}
+            {{ form.cantidad }}
+        </div>
+        <div class="col-md-3 d-flex align-items-end">
+            <button class="btn btn-orange w-100">Agregar</button>
+        </div>
+    </form>
+</div>
+
+<div class="mb-3 d-flex flex-wrap gap-2">
+
+    {# Mesero y gerente pueden PAGAR si hay ítems y está abierta #}
+    {% if orden.estado == "abierta" and orden.items.all %}
+        <form method="post" action="{% url 'cambiar_estado_orden' orden.id 'pagada' %}">
+            {% csrf_token %}
+            <button class="btn btn-success btn-sm">
+                Marcar como pagada
+            </button>
+        </form>
+    {% endif %}
+
+    {# LIBERAR MESA: marcar como cancelada (sin venta) #}
+    {% if orden.estado == "abierta" %}
+        <form method="post" action="{% url 'cambiar_estado_orden' orden.id 'cancelada' %}">
+            {% csrf_token %}
+            <button class="btn btn-outline-secondary btn-sm">
+                Liberar mesa
+            </button>
+        </form>
+    {% endif %}
+</div>
+
+
+
+
+<h5>Platos en esta orden</h5>
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Plato</th>
+            <th>Cantidad</th>
+            <th>Precio unitario</th>
+            <th>Subtotal</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in items %}
+        <tr>
+            <td>{{ item.plato.nombre }}</td>
+            <td>{{ item.cantidad }}</td>
+            <td>${{ item.precio_unitario }}</td>
+            <td>${{ item.subtotal }}</td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="4">Aún no hay platos en esta orden.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+<p class="text-end fw-bold">
+    Total: ${{ orden.total }}
+</p>
+{% endblock %}

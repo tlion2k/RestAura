@@ -1,0 +1,88 @@
+# ============================
+#   PYTHON
+# ============================
+
+# Archivos compilados
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Entornos virtuales
+venv/
+env/
+.venv/
+.venv*/
+
+# Archivos de paquetes
+pip-log.txt
+pip-delete-this-directory.txt
+
+# ============================
+#   DJANGO
+# ============================
+
+# Archivos de migraciones automáticas
+*/migrations/*.py
+!*/migrations/__init__.py
+
+# Archivos de configuración sensible
+.env
+.env.local
+*.env
+
+# Archivos temporales
+*.log
+*.pot
+*.pyc
+
+# BD SQLite (si existiera)
+db.sqlite3
+
+# ============================
+#   MEDIA & STATIC
+# ============================
+
+# Archivos subidos
+media/
+media/*
+
+# Archivos generados por collectstatic
+staticfiles/
+static/
+static_root/
+
+# ============================
+#   EDITORES Y SISTEMA
+# ============================
+
+# VSCode
+.vscode/
+.history/
+.settings/
+
+# PyCharm
+.idea/
+
+# Windows / Mac
+Thumbs.db
+.DS_Store
+
+# ============================
+#   MÁQUINAS VIRTUALES / DOCKER
+# ============================
+
+# Docker
+docker-compose.override.yml
+*.sqlite
+
+# ============================
+#   OTROS 
+# ============================
+
+# Archivos de pruebas
+coverage/
+htmlcov/
+
+# Archivos de caché
+.cache/
+pytest_cache/

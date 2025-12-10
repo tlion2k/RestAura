@@ -1,0 +1,39 @@
+{% extends "panel/base_admin.html" %}
+
+{% block admin_content %}
+<h2 class="section-title mb-3">Mesas atendidas</h2>
+<p class="text-muted mb-3">
+    Aquí ves cada mesa con su última orden registrada. Puedes entrar al historial para ver todas las ventas.
+</p>
+
+<table class="table table-striped align-middle">
+    <thead>
+        <tr>
+            <th>Mesa</th>
+            <th>Mesero</th>
+            <th>Fecha / hora</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in mesas_atendidas %}
+        {% with mesa=item.mesa ultima=item.ultima_orden %}
+        <tr>
+            <td>Mesa {{ mesa.numero }}</td>
+            <td>{{ item.mesero.username }}</td>
+            <td>{{ ultima.fecha_creacion|date:"d/m/Y H:i" }}</td>
+            <td>
+                <a href="{% url 'historial_mesa' mesa.id %}" class="btn btn-sm btn-outline-orange">
+                    Ver historial
+                </a>
+            </td>
+        </tr>
+        {% endwith %}
+        {% empty %}
+        <tr>
+            <td colspan="6">Todavía no hay mesas atendidas.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

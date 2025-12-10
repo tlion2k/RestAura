@@ -1,0 +1,50 @@
+{% extends "panel/base_admin.html" %}
+
+{% block admin_content %}
+<h2 class="section-title mb-3">Órdenes de hoy ({{ fecha }})</h2>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>#</th>
+            <th>Mesa</th>
+            <th>Mesero</th>
+            <th>Estado</th>
+            <th>Total</th>
+            <th>Hora</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for orden in ordenes %}
+        <tr>
+            <td>{{ orden.id }}</td>
+            <td>Mesa {{ orden.mesa.numero }}</td>
+            <td>{{ orden.mesero.username }}</td>
+            <td>
+                {% if orden.estado == "abierta" %}
+                    <span class="badge bg-warning text-dark">Abierta</span>
+                {% elif orden.estado == "servida" %}
+                    <span class="badge bg-info text-dark">Servida</span>
+                {% elif orden.estado == "pagada" %}
+                    <span class="badge bg-success">Pagada</span>
+                {% elif orden.estado == "cancelada" %}
+                    <span class="badge bg-danger">Cancelada</span>
+                {% endif %}
+            </td>
+            <td>${{ orden.total }}</td>
+            <td>{{ orden.fecha_creacion|time:"H:i" }}</td>
+            <td>
+                <a href="{% url 'orden_mesa' orden.mesa.id %}" class="btn btn-sm btn-outline-orange">
+                    Ver
+                </a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="7">No hay órdenes registradas hoy.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

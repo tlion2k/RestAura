@@ -1,0 +1,42 @@
+{% extends "public/base.html" %}
+
+{% block content %}
+<div class="row">
+    <!-- SIDEBAR -->
+    <div class="col-md-3 mb-3">
+        <div class="sidebar-custom">
+            <a href="{% url 'admin_panel' %}"
+               class="sidebar-item {% if request.resolver_match.url_name == 'admin_panel' %}active{% endif %}">
+                🧭 Panel principal
+            </a>
+
+            {% if es_gerente_o_admin %}
+                <a href="{% url 'platos_list' %}"
+                   class="sidebar-item {% if request.resolver_match.url_name in 'platos_list plato_create plato_update' %}active{% endif %}">
+                    🍽️ Gestión de platos
+                </a>
+            {% endif %}
+
+            {% if es_mesero or es_gerente_o_admin %}
+                <a href="{% url 'mesas_mesero' %}"
+                class="sidebar-item {% if request.resolver_match.url_name == 'mesas_mesero' %}active{% endif %}">
+                    🧾 Órdenar
+                </a>
+
+                <a href="{% url 'mesas_atendidas' %}"
+                class="sidebar-item {% if request.resolver_match.url_name == 'mesas_atendidas' %}active{% endif %}">
+                    📋 Estado Mesas
+                </a>
+            {% endif %}
+
+
+        </div>
+    </div>
+
+    <!-- CONTENIDO -->
+    <div class="col-md-9">
+        {% block admin_content %}
+        {% endblock %}
+    </div>
+</div>
+{% endblock %}

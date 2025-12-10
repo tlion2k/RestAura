@@ -1,0 +1,69 @@
+{% extends "panel/base_admin.html" %}
+
+{% block admin_content %}
+<h2 class="section-title mb-3">Estadísticas por mesero</h2>
+<p class="text-muted mb-4">
+    Solo se consideran las órdenes con estado <strong>pagada</strong>.
+</p>
+
+<table class="table table-striped align-middle">
+    <thead>
+        <tr>
+            <th>Mesero</th>
+            <th>Órdenes completas</th>
+            <th>Total recaudado</th>
+            <th>Detalle</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for item in estadisticas %}
+        <tr>
+            <td>{{ item.mesero.username }}</td>
+            <td>{{ item.cantidad_ordenes }}</td>
+            <td>${{ item.total_ganado }}</td>
+            <td>
+                <button class="btn btn-sm btn-outline-orange" type="button"
+                        data-bs-toggle="collapse"
+                        data-bs-target="#detalleMesero{{ forloop.counter }}"
+                        aria-expanded="false">
+                    Ver órdenes
+                </button>
+            </td>
+        </tr>
+        <tr class="collapse" id="detalleMesero{{ forloop.counter }}">
+            <td colspan="4">
+                {% if item.ordenes %}
+                    <table class="table table-sm table-bordered mb-0">
+                        <thead>
+                            <tr>
+                                <th># Orden</th>
+                                <th>Mesa</th>
+                                <th>Fecha</th>
+                                <th>Total</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {% for orden in item.ordenes %}
+                            <tr>
+                                <td>{{ orden.id }}</td>
+                                <td>Mesa {{ orden.mesa.numero }}</td>
+                                <td>{{ orden.fecha_creacion|date:"d/m/Y H:i" }}</td>
+                                <td>${{ orden.total }}</td>
+                            </tr>
+                            {% endfor %}
+                        </tbody>
+                    </table>
+                {% else %}
+                    <p class="mb-0 text-muted">Este mesero aún no tiene órdenes pagadas.</p>
+                {% endif %}
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="4">No hay meseros con órdenes registradas.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+
+{% endblock %}

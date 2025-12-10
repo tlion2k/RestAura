@@ -1,0 +1,40 @@
+{% extends "panel/base_admin.html" %}
+
+{% block admin_content %}
+<h2 class="section-title mb-3">Gestión de platos</h2>
+
+<a href="{% url 'plato_create' %}" class="btn btn-orange mb-3">
+    + Crear nuevo plato
+</a>
+
+<table class="table table-striped">
+    <thead>
+        <tr>
+            <th>Nombre</th>
+            <th>Categoría</th>
+            <th>Precio</th>
+            <th>Disponible</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for plato in platos %}
+        <tr>
+            <td>{{ plato.nombre }}</td>
+            <td>{{ plato.categoria.nombre }}</td>
+            <td>${{ plato.precio }}</td>
+            <td>{% if plato.disponible %}Sí{% else %}No{% endif %}</td>
+            <td class="text-end">
+                <a href="{% url 'plato_update' plato.id %}" class="btn btn-sm btn-outline-secondary">Editar</a>
+                <a href="{% url 'plato_delete' plato.id %}" class="btn btn-sm btn-outline-danger">Eliminar</a>
+            </td>
+        </tr>
+        {% empty %}
+        <tr>
+            <td colspan="5">No hay platos registrados.</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
+

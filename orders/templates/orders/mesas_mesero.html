@@ -1,0 +1,56 @@
+{% extends "panel/base_admin.html" %}
+
+{% block admin_content %}
+<h2 class="section-title mb-3">Mesas asignadas</h2>
+
+{# Formulario para ir a una mesa por número (crea si no existe) #}
+<div class="card mb-4 shadow-sm">
+    <div class="card-body">
+        <h5 class="card-title mb-3">Crear / ir a orden por número de mesa</h5>
+        <form method="post" class="row g-2">
+            {% csrf_token %}
+            <div class="col-md-4">
+                <label for="id_numero_mesa" class="form-label">Número de mesa</label>
+                <input type="number" min="1" class="form-control" name="numero_mesa" id="id_numero_mesa" required>
+            </div>
+            <div class="col-md-3 d-flex align-items-end">
+                <button type="submit" class="btn btn-orange w-100">
+                    Ir a la mesa
+                </button>
+            </div>
+        </form>
+        <p class="text-muted small mt-2 mb-0">
+            Si la mesa no existe, se creará automáticamente y se asignará a ti. (limite de 10 mesas)
+        </p>
+    </div>
+</div>
+
+{# Listado de mesas activas #}
+<div class="row">
+    {% for mesa in mesas %}
+    <div class="col-md-4 mb-3">
+        <div class="card shadow-sm h-100">
+            <div class="card-body d-flex flex-column">
+                <h5 class="card-title">Mesa {{ mesa.numero }}</h5>
+                {% if mesa.descripcion %}
+                    <p class="text-muted">{{ mesa.descripcion }}</p>
+                {% endif %}
+                {% if mesa.mesero_asignado %}
+                    <p class="text-muted small mb-2">
+                        Mesero: {{ mesa.mesero_asignado.username }}
+                    </p>
+                {% endif %}
+                <div class="mt-auto">
+                    <a href="{% url 'orden_mesa' mesa.id %}" class="btn btn-outline-orange w-100">
+                        Ver / Crear orden
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+    {% empty %}
+    <p>No hay mesas registradas todavía. Usa el formulario de arriba para crear una.</p>
+    {% endfor %}
+</div>
+
+{% endblock %}

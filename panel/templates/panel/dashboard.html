@@ -1,0 +1,122 @@
+{% extends "panel/base_admin.html" %}
+
+{% block admin_content %}
+<h2 class="section-title mb-3">Panel de administración</h2>
+
+<p class="mb-2">
+    Bienvenido, <strong>{{ request.user.username }}</strong>.
+</p>
+
+<hr>
+
+{# KPIs #}
+<div class="row mb-4">
+    <div class="col-md-3 mb-3">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <p class="text-muted mb-1">Categorías activas</p>
+                <h4 class="mb-0">{{ total_categorias }}</h4>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-3">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <p class="text-muted mb-1">Platos totales</p>
+                <h4 class="mb-0">{{ total_platos }}</h4>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-3">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <p class="text-muted mb-1">Platos disponibles</p>
+                <h4 class="mb-0 text-success">{{ platos_disponibles }}</h4>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-3 mb-3">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <p class="text-muted mb-1">No disponibles</p>
+                <h4 class="mb-0 text-danger">{{ platos_no_disponibles }}</h4>
+            </div>
+        </div>
+    </div>
+</div>
+
+{# PLATO RECOMENDADO (API externa) #}
+<h4 class="mb-3">Plato recomendado (API externa)</h4>
+
+{% if sugerencia_externa %}
+    <div class="card mb-4 shadow-sm" style="max-width: 650px;">
+        <div class="row g-0">
+            <div class="col-md-4">
+                {% if sugerencia_externa.imagen %}
+                    <img src="{{ sugerencia_externa.imagen }}"
+                         alt="{{ sugerencia_externa.nombre }}"
+                         class="img-fluid rounded-start">
+                {% endif %}
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h5 class="card-title mb-1">{{ sugerencia_externa.nombre }}</h5>
+                    <p class="mb-1">
+                        <span class="badge bg-secondary">{{ sugerencia_externa.categoria }}</span>
+                        <span class="badge bg-light text-dark">Origen: {{ sugerencia_externa.origen }}</span>
+                    </p>
+                    <p class="card-text mt-2">
+                        {{ sugerencia_externa.instrucciones }}
+                    </p>
+                    <a href="{{ sugerencia_externa.fuente }}" target="_blank" class="btn btn-outline-orange btn-sm">
+                        Ver receta completa
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% else %}
+    <p class="text-muted">
+        No se pudo obtener la sugerencia externa en este momento.
+    </p>
+{% endif %}
+
+<hr class="my-4">
+
+{# GRÁFICO Chart.js #}
+<h4 class="mb-3">Platos por categoría</h4>
+<p class="text-muted">Resumen de cuántos platos tienes en cada categoría.</p>
+
+<div style="max-width: 650px;">
+    <canvas id="platosCategoriaChart"></canvas>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const ctx = document.getElementById('platosCategoriaChart').getContext('2d');
+
+    const labels = {{ chart_labels|safe }};
+    const data = {{ chart_data|safe }};
+
+    new Chart(ctx, {
+        type: 'bar',
+        data: {
+            labels: labels,
+            datasets: [{
+                label: 'Cantidad de platos',
+                data: data,
+                borderWidth: 1,
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true,
+                    precision: 0
+                }
+            }
+        }
+    });
+</script>
+{% endblock %}

@@ -1,0 +1,79 @@
+{% extends "public/base.html" %}
+
+{% block content %}
+<h2 class="section-title mb-4 text-center">Nuestra Carta</h2>
+<p class="text-center text-muted mb-3">Disfruta nuestros platos disponibles hoy</p>
+
+{# Filtro por categoría #}
+<form method="get" class="mb-5">
+    <div class="row justify-content-center">
+        <div class="col-md-4 mb-2">
+            <select name="categoria" class="form-select">
+                <option value="">Todas las categorías</option>
+                {% for cat in todas_categorias %}
+                    <option value="{{ cat.id }}"
+                        {% if categoria_seleccionada == cat.id %}selected{% endif %}>
+                        {{ cat.nombre }}
+                    </option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="col-md-2 mb-2 d-grid">
+            <button type="submit" class="btn btn-orange">Filtrar</button>
+        </div>
+        <div class="col-md-2 mb-2 d-grid">
+            <a href="{% url 'carta' %}" class="btn btn-outline-orange">Limpiar filtro</a>
+        </div>
+    </div>
+</form>
+
+{% if categorias %}
+    {% for categoria in categorias %}
+        {% if categoria.platos.all %}
+            <div class="mb-5">
+                <!-- Título de categoría -->
+                <h3 class="mb-3" style="color:#f97316;">{{ categoria.nombre }}</h3>
+                
+                {% if categoria.descripcion %}
+                    <p class="text-muted mb-4">{{ categoria.descripcion }}</p>
+                {% endif %}
+
+                <div class="row">
+                    {% for plato in categoria.platos.all %}
+                    <div class="col-md-6 col-lg-4 mb-4">
+                        <div class="card shadow-sm h-100">
+
+                            <img src="{{ plato.imagen_url }}" alt="{{ plato.nombre }}" class="card-img-top">
+                            
+                            <div class="card-body">
+                                <h5 class="card-title">{{ plato.nombre }}</h5>
+
+                                {% if plato.descripcion %}
+                                <p class="card-text text-muted" style="font-size: 0.9rem;">
+                                    {{ plato.descripcion|truncatewords:20 }}
+                                </p>
+                                {% endif %}
+                            </div>
+                            
+                            <div class="card-footer d-flex justify-content-between align-items-center">
+                                <span class="fw-bold">${{ plato.precio }}</span>
+                                <span class="badge bg-success">Disponible</span>
+                            </div>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+            </div>
+
+            <hr class="my-5">
+        {% endif %}
+    {% endfor %}
+
+{% else %}
+<div class="alert alert-warning text-center">
+    No hay platos disponibles en este momento.
+</div>
+{% endif %}
+
+{% endblock %}

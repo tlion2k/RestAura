@@ -1,0 +1,61 @@
+INSERT INTO menu_categoriaplato (nombre, descripcion, activo)
+VALUES
+('Entradas', 'Platos pequeños para comenzar la comida.', 1),
+('Platos principales', 'Platos de fondo o principales.', 1),
+('Acompañamientos', 'Platos secundarios para acompañar.', 1),
+('Ensaladas', 'Ensaladas frescas y saludables.', 1),
+('Pastas', 'Platos de pasta.', 1),
+('Carnes', 'Platos preparados a base de carnes.', 1),
+('Pescados y Mariscos', 'Platos preparados con pescados o mariscos.', 1),
+('Sopas y Cremas', 'Preparaciones calientes y ligeras.', 1),
+('Postres', 'Platos dulces para finalizar.', 1),
+('Bebidas', 'Bebidas frías y calientes.', 1),
+('Jugos naturales', 'Jugos exprimidos o naturales.', 1),
+('Sandwiches y Hamburguesas', 'Preparaciones rápidas.', 1);
+
+
+INSERT INTO menu_plato 
+(nombre, descripcion, precio, disponible, imagen, categoria_id, fecha_creacion)
+VALUES
+-- ENSALADAS
+('Ensalada Caprese', 'Tomates frescos, mozzarella y albahaca.', 6500, 1,
+ 'https://images.unsplash.com/photo-1555072955-8f1a8994a36b', 4, NOW()),
+
+('Ensalada César clásica', 'Lechuga fresca con aderezo César, parmesano y crutones.', 7200, 1,
+ 'https://images.unsplash.com/photo-1556911220-e15b29be8c0e', 4, NOW()),
+
+('Ensalada verde con frutos secos', 'Mix de hojas verdes con nueces y almendras.', 6900, 1,
+ 'https://images.unsplash.com/photo-1512621776951-a57141f2eefd', 4, NOW()),
+
+-- ENTRADAS
+('Camarones al ajillo', 'Camarones salteados con ajo y perejil.', 8900, 1,
+ 'https://images.unsplash.com/photo-1600891964599-f61ba0e24092', 1, NOW()),
+
+-- PASTAS
+('Pasta al pesto', 'Pasta fresca con salsa de albahaca y parmesano.', 9200, 1,
+ 'https://images.unsplash.com/photo-1525755662778-989d0524087e', 5, NOW()),
+
+-- CARNES
+('Filete a la plancha con verduras', 'Filete jugoso acompañado de verduras salteadas.', 12500, 1,
+ 'https://images.unsplash.com/photo-1553163147-622ab57e7c57', 6, NOW()),
+
+('Pollo grillado con hierbas', 'Pollo marinado en hierbas frescas a la parrilla.', 8500, 1,
+ 'https://images.unsplash.com/photo-1604908177073-b7b6b1b12b36', 6, NOW()),
+
+-- PESCADOS Y MARISCOS
+('Salmón a la mantequilla', 'Filete de salmón sellado con mantequilla y limón.', 13800, 1,
+ 'https://images.unsplash.com/photo-1588167108260-53b1b329ba0c', 7, NOW()),
+
+('Calamares fritos', 'Aros de calamar crocantes y dorados.', 9800, 1,
+ 'https://images.unsplash.com/photo-1626139053292-c67bfce23fc5', 7, NOW()),
+
+-- POSTRES
+('Cheesecake de frutilla', 'Cheesecake suave con coulis de frutilla.', 4800, 1,
+ 'https://images.unsplash.com/photo-1514516345957-556ca7d90fce', 9, NOW()),
+
+('Flan casero', 'Flan tradicional bañado en caramelo.', 3500, 1,
+ 'https://images.unsplash.com/photo-1612198796048-7b1e5d652262', 9, NOW()),
+
+-- JUGOS NATURALES
+('Jugo natural de naranja', 'Jugo exprimido de naranjas frescas.', 2500, 1,
+ 'https://images.unsplash.com/photo-1553531888-a6c73ce7a846', 11, NOW());
