@@ -38,17 +38,8 @@ pip-delete-this-directory.txt
 # BD SQLite (si existiera)
 db.sqlite3
 
-# ============================
-#   MEDIA & STATIC
-# ============================
-
-# Archivos subidos
-media/
-media/*
-
 # Archivos generados por collectstatic
 staticfiles/
-static/
 static_root/
 
 # ============================
